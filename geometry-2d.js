@@ -842,15 +842,15 @@ export class Transform {
     return attr;
   }
 
-  toCSSValue(bounds) {
+  toCSSValue(origin) {
     var attr = '', delta = this.getTranslation();
 
     attr += "translate(" + delta.x.toFixed(2) + "px," + delta.y.toFixed(2) +"px)";
 
-    if (bounds) {
+    if (origin) {
       // FIXME this is to fix the rotation...!
-      var offsetX = bounds.width / 2;
-      var offsetY = bounds.height / 2;
+      var offsetX = origin.x;
+      var offsetY = origin.y;
       attr += " translate(" + offsetX.toFixed(2) + "px," + offsetY.toFixed(2) +"px)";
     }
 
@@ -858,16 +858,16 @@ export class Transform {
     if (theta != 0.0) attr += " rotate("
         + this.getRotation().toFixed(2) +"deg)";
 
-    if (bounds) {
-      // FIXME this is to fix the rotation...!
-      var offsetX = bounds.width / 2;
-      var offsetY = bounds.height / 2;
-      attr += " translate(" + (offsetX * -1).toFixed(2) + "px," + (offsetY * -1).toFixed(2) +"px)";
-    }
-
     var sp = this.getScalePoint();
     if (sp.x != 1.0 || sp.y != 1.0) {
       attr += " scale(" + sp.x.toFixed(2) + "," + sp.y.toFixed(2) + ")";
+    }
+
+    if (origin) {
+      // FIXME this is to fix the rotation...!
+      var offsetX = origin.x;
+      var offsetY = origin.y;
+      attr += " translate(" + (offsetX * -1).toFixed(2) + "px," + (offsetY * -1).toFixed(2) +"px)";
     }
 
     return attr;
